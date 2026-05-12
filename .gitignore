@@ -13,8 +13,6 @@ venv.bak/
 # Jupyter Notebook
 .ipynb_checkpoints/
 *.ipynb_checkpoints
-*.ipynb
-!*example.ipynb
 
 # Virtual Environment
 venv/
