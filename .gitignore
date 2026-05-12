@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+*.ipynb
+!*example.ipynb
+
+# Virtual Environment
+venv/
+.virtualenv/
+.vscode/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Data files (important!)
+dataset/*.csv
+!dataset/.gitkeep
+*.csv
+!requirements.txt
+
+# Models
+*.joblib
+*.pkl
+*.h5
+*.pth
+
+# Figures
+figs/
+*.png
+*.jpg
+*.pdf
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local configuration
+.env
+config.py
