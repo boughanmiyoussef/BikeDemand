@@ -13,6 +13,8 @@ venv.bak/
 # Jupyter Notebook
 .ipynb_checkpoints/
 *.ipynb_checkpoints
+*.ipynb
+!*example.ipynb
 
 # Virtual Environment
 venv/
@@ -26,17 +28,20 @@ venv/
 *.swo
 *~
 
-# Data files (important!)
+# Data files
 dataset/*.csv
 !dataset/.gitkeep
 *.csv
 !requirements.txt
 
-# Models
+# Generated files
 *.joblib
 *.pkl
 *.h5
 *.pth
+test_predictions.csv
+feature_importance.csv
+final_metrics.txt
 
 # Figures
 figs/
