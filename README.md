@@ -140,11 +140,11 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 
 ## 📸 Web Application Screenshots
 
-!(screenshots/home_page.png)
+!(screenshots/image1.png)
 
-!(screenshots/prediction_result.png)
+!(screenshots/image2.png)
 
-!(screenshots/sample_predictions.png)
+!(screenshots/image3.png)
 
 ---
 
