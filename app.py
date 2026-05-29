@@ -233,18 +233,6 @@ if st.button("🚲 Predict Bike Rentals", type="primary", use_container_width=Tr
         prediction = model.predict(features)[0]
         prediction = max(0, int(round(prediction)))
         
-        st.divider()
-        st.subheader("📊 Prediction Result")
-        
-        col_a, col_b, col_c = st.columns([1, 2, 1])
-        with col_b:
-            st.markdown(f"""
-            <div style="background-color: #4CAF50; padding: 30px; border-radius: 20px; text-align: center;">
-                <h1 style="color: white; margin: 0;">🚲 {prediction:,}</h1>
-                <p style="color: white; margin: 0; font-size: 18px;">Typical Day Prediction (Non-Holiday)</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
         # ========== ACTUAL VS PREDICTED COMPARISON ==========
         st.divider()
         st.subheader(f"📊 Historical Data for {weekday_names[weekday]}s in {month_names[month]} {year}")
