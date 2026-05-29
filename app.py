@@ -303,11 +303,8 @@ if st.button("🚲 Predict Bike Rentals", type="primary", use_container_width=Tr
                         st.success(f"✅ Your prediction ({prediction} bikes) is very close to historical average ({avg_actual:.0f} bikes)!")
                     elif diff_from_avg < 50:
                         st.info(f"ℹ️ Your prediction ({prediction} bikes) is reasonably close to historical average ({avg_actual:.0f} bikes)")
-                    else:
-                        st.warning(f"⚠️ Your prediction ({prediction} bikes) differs from historical average ({avg_actual:.0f} bikes)")
                 else:
                     st.info(f"No historical data found for {weekday_names[weekday]}s in {month_names[month]} {year} at {hour}:00")
-            
         else:
             st.warning("test_predictions.csv not found. Run the notebook first to generate predictions.")
         
