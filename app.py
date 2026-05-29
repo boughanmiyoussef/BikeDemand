@@ -309,6 +309,5 @@ if st.button("🚲 Predict Bike Rentals", type="primary", use_container_width=Tr
             st.warning("test_predictions.csv not found. Run the notebook first to generate predictions.")
         
         st.caption(f"Prediction based on: {hour}:00, {weekday_names[weekday]}, {month_names[month]}, {weathersit_names[weathersit]}")
-        
     else:
         st.error("Model not loaded. Please ensure 'lightgbm_model.pkl' exists.")
