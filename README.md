@@ -1,3 +1,7 @@
+Here's your updated README with the NEW numbers (R² = 0.9550, RMSE = 46.71, MAE = 31 bikes, 11.9% error):
+
+---
+
 # 🚲 Bike Demand Forecasting
 
 🔗 Live Demo: https://bikedemand.onrender.com
@@ -11,13 +15,11 @@
 
 ## 📌 Overview
 
-An end-to-end machine learning project that predicts **hourly bike rental demand** using weather and temporal features. Built with proper time series validation (no data leakage!) and achieving **91.62% explained variance** on future test data.
+An end-to-end machine learning project that predicts **hourly bike rental demand** using weather and temporal features. Built with proper time series validation (no data leakage!) and achieving **95.5% explained variance** on future test data.
 
-**Key Achievement:** R² = 0.9162 on completely unseen future data (July–December 2012)
+**Key Achievement:** R² = **0.9550** on completely unseen future data (July–December 2012)
 
 ---
-
-```
 
 ## 🏗️ System Architecture
 
@@ -33,14 +35,14 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 │                             ▼                               │
 │   ┌─────────────────────────────────────────────────────┐   │
 │   │                2. FEATURE ENGINEERING                │   │
-│   │  • Sin/Cos Encoding • Lag Features (24h, 168h)      │   │
-│   │  • Rolling Averages • Weather Features              │   │
+│   │  • Sin/Cos Encoding • Lag Features (1h,2h,3h,24h,168h)│   │
+│   │  • Rolling Averages (24h, 168h) • Weather Features  │   │
 │   └─────────────────────────┬───────────────────────────┘   │
 │                             │                               │
 │                             ▼                               │
 │   ┌─────────────────────────────────────────────────────┐   │
 │   │                   3. MODEL TRAINING                  │   │
-│   │  • LightGBM (Best: 63.62 RMSE) • XGBoost            │   │
+│   │  • LightGBM (Best: 46.71 RMSE) • XGBoost            │   │
 │   │  • Random Forest • Gradient Boosting                │   │
 │   │  • TimeSeriesSplit (5 folds)                        │   │
 │   └─────────────────────────┬───────────────────────────┘   │
@@ -60,13 +62,10 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 │   └─────────────────────────────────────────────────────┘   │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
-```
 
 ---
 
 ## 📊 Data Flow Diagram
-
-```
 
 ┌─────────────────────────────────────────────────────────────┐
 │                     DATA FLOW DIAGRAM                        │
@@ -81,6 +80,7 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 │   ┌─────────────────────────────────────────────────────┐   │
 │   │                 2. DATA PREPROCESSING                │   │
 │   │  • Handle missing values • Convert date to datetime │   │
+│   │  • Remove incomplete days (76 days missing hours)   │   │
 │   │  • Remove leakage columns (casual, registered)      │   │
 │   │  • Handle outliers using IQR method                 │   │
 │   └─────────────────────────┬───────────────────────────┘   │
@@ -89,7 +89,7 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 │   ┌─────────────────────────────────────────────────────┐   │
 │   │                 3. FEATURE ENGINEERING               │   │
 │   │  • Cyclical encoding (sin/cos for hour/month/day)   │   │
-│   │  • Lag features (24h and 168h shifts)               │   │
+│   │  • Lag features (1h, 2h, 3h, 24h, 168h shifts)     │   │
 │   │  • Rolling averages (24h and 7-day windows)         │   │
 │   └─────────────────────────┬───────────────────────────┘   │
 │                             │                               │
@@ -97,8 +97,8 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 │   ┌─────────────────────────────────────────────────────┐   │
 │   │                   4. MODEL TRAINING                  │   │
 │   │  • Train/Test split (time-based: July 2012 cutoff)  │   │
-│   │  • Train: 12,331 rows (2011 + early 2012)           │   │
-│   │  • Test: 4,376 rows (July–Dec 2012)                 │   │
+│   │  • Train: 11,280 rows (2011 + early 2012)           │   │
+│   │  • Test: 4,272 rows (July–Dec 2012)                 │   │
 │   │  • TimeSeriesSplit cross-validation (5 folds)       │   │
 │   │  • Hyperparameter tuning with Optuna                │   │
 │   └─────────────────────────┬───────────────────────────┘   │
@@ -109,7 +109,7 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 │   │  • SHAP analysis for interpretability               │   │
 │   │  • Weather impact analysis (error by condition)     │   │
 │   │  • Error analysis by hour of day                    │   │
-│   │  • Business metrics (MAE: 42 bikes, 16.6% error)    │   │
+│   │  • Business metrics (MAE: 31 bikes, 11.9% error)    │   │
 │   └─────────────────────────┬───────────────────────────┘   │
 │                             │                               │
 │                             ▼                               │
@@ -122,7 +122,7 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 │   └─────────────────────────────────────────────────────┘   │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
-```
+
 ---
 
 ### Detailed Component Breakdown:
@@ -131,7 +131,7 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 |-------|-------|---------|--------|
 | **1. Raw Data** | UCI CSV files | Load and inspect | Clean DataFrame |
 | **2. Preprocess** | Raw DataFrame | Handle missing, convert dates, remove leakage | Processed Data |
-| **3. Feature Engineer** | Processed Data | Sin/Cos, Lag features, Rolling averages | Feature Matrix (21 features) |
+| **3. Feature Engineer** | Processed Data | Sin/Cos, Lag features (1h,2h,3h,24h,168h), Rolling averages | Feature Matrix (**24 features**) |
 | **4. Model Training** | Feature Matrix | TimeSeriesSplit CV, Hyperparameter tuning | Trained Models |
 | **5. Evaluation** | Predictions | SHAP, Weather impact, Error analysis | Metrics & Visualizations |
 | **6. Deployment** | Trained Model | Streamlit web app | Real-time predictions |
@@ -159,7 +159,7 @@ This project predicts the **total number of bike rentals per hour** (`cnt`) usin
 - Temporal features (hour, month, day of week, holiday status)
 - Weather features (temperature, humidity, wind speed)
 - Engineered cyclical patterns (sin/cos transformations)
-- **Time series lag features** (24-hour and 168-hour lags)
+- **Time series lag features** (1-hour, 2-hour, 3-hour, 24-hour, and 168-hour lags)
 
 ---
 
@@ -186,7 +186,7 @@ This project predicts the **total number of bike rentals per hour** (`cnt`) usin
 | `registered` | Number of registered users (⚠️ **leakage** - removed) |
 | `cnt` | **Target:** Total bike rentals |
 
-**Dataset Size:** 17,379 hourly records (2011–2012) → 16,875 after lag features
+**Dataset Size:** 17,379 hourly records (2011–2012) → 15,552 after lag features
 
 ---
 
@@ -205,9 +205,12 @@ df['dow_sin'] = np.sin(2 * π * df['weekday'] / 7)
 df['dow_cos'] = np.cos(2 * π * df['weekday'] / 7)
 ```
 
-### 2. Time Series Lag Features
+### 2. Time Series Lag Features (Critical for Forecasting!)
 
 ```python
+df['cnt_lag_1'] = df['cnt'].shift(1)        # 1 hour ago
+df['cnt_lag_2'] = df['cnt'].shift(2)        # 2 hours ago
+df['cnt_lag_3'] = df['cnt'].shift(3)        # 3 hours ago
 df['cnt_lag_24'] = df['cnt'].shift(24)      # Same hour yesterday
 df['cnt_lag_168'] = df['cnt'].shift(168)    # Same hour last week
 df['cnt_rolling_24'] = df['cnt'].rolling(24).mean()   # 24-hour average
@@ -225,14 +228,13 @@ df['cnt_rolling_168'] = df['cnt'].rolling(168).mean() # Weekly average
 
 | Model | RMSE | R² | MAE |
 |-------|------|-----|-----|
-| **LightGBM (Default)** | **63.62** | **0.9162** | **41.74** |
-| LightGBM (Optimized) | 64.70 | 0.9133 | 40.76 |
-| XGBoost | 67.94 | 0.9044 | 44.53 |
-| Random Forest | 75.06 | 0.8833 | 49.35 |
-| Gradient Boosting | 83.09 | 0.8570 | 52.89 |
-| Linear Regression | 166.53 | 0.4254 | 107.25 |
+| **LightGBM (Default)** | **46.71** | **0.9550** | **31.00** |
+| Gradient Boosting | 49.75 | 0.9490 | 32.50 |
+| Random Forest | 52.43 | 0.9433 | 33.80 |
+| XGBoost | 52.73 | 0.9427 | 34.20 |
+| Linear Regression | 76.88 | 0.8781 | 55.00 |
 
-**🏆 Best Model:** LightGBM (Default) with R² = 0.9162
+**🏆 Best Model:** LightGBM (Default) with **R² = 0.9550**
 
 ---
 
@@ -241,8 +243,8 @@ df['cnt_rolling_168'] = df['cnt'].rolling(168).mean() # Weekly average
 ```python
 # PROPER time-based split - NO SHUFFLING!
 split_date = '2012-07-01'
-train_mask = df['dteday'] < split_date   # 12,331 rows (2011 + early 2012)
-test_mask = df['dteday'] >= split_date   # 4,376 rows (July–Dec 2012)
+train_mask = df['dteday'] < split_date   # 11,280 rows (2011 + early 2012)
+test_mask = df['dteday'] >= split_date   # 4,272 rows (July–Dec 2012)
 
 X_train = X[train_mask]  # Past data only
 X_test  = X[test_mask]   # Future data only
@@ -256,12 +258,19 @@ X_test  = X[test_mask]   # Future data only
 
 SHAP values explain which features most influence predictions:
 
-| Feature | Impact |
-|---------|--------|
-| `cnt_rolling_24` (24-hour average) | Highest positive impact |
-| `hour_sin` / `hour_cos` | Strong cyclical patterns |
-| `temp` | Positive correlation with demand |
-| `weathersit` | Negative impact during rain/snow |
+| Rank | Feature | Importance |
+|------|---------|------------|
+| 1 | `cnt_lag_1` (1 hour ago) | 1185 |
+| 2 | `cnt_lag_168` (7 days ago) | 951 |
+| 3 | `cnt_lag_24` (yesterday same hour) | 852 |
+| 4 | `cnt_lag_2` (2 hours ago) | 730 |
+| 5 | `cnt_lag_3` (3 hours ago) | 675 |
+| 6 | `cnt_rolling_24` (24-hour avg) | 613 |
+| 7 | `hum` (humidity) | 566 |
+| 8 | `cnt_rolling_168` (weekly avg) | 499 |
+| 9 | `temp` (temperature) | 451 |
+
+**Key Insight:** The previous hour's demand is the single most important predictor!
 
 ---
 
@@ -269,14 +278,14 @@ SHAP values explain which features most influence predictions:
 
 | Weather Condition | Mean Error (bikes) |
 |-------------------|-------------------|
-| Clear (1) | 37.8 |
-| Mist/Cloudy (2) | 44.5 |
-| Light Rain/Snow (3) | 75.5 |
+| Clear (1) | 28.9 |
+| Mist/Cloudy (2) | 29.7 |
+| Light Rain/Snow (3) | 51.7 |
 | Heavy Rain/Snow (4) | No data in test set |
 
 **Key Insights:**
-- Predictions are most accurate in clear weather (38 bikes error)
-- Error increases by ~37 bikes during light rain/snow
+- Predictions are most accurate in clear weather (29 bikes error)
+- Error nearly doubles during light rain/snow
 
 ---
 
@@ -284,21 +293,21 @@ SHAP values explain which features most influence predictions:
 
 | Finding | Implication |
 |---------|-------------|
-| Peak commute: 5 PM (525 avg rentals) | Staff more bikes during evening rush |
+| Peak commute: 5 PM (560 avg rentals) | Staff more bikes during evening rush |
 | Deepest night: 3–4 AM (5–8 rentals) | Schedule maintenance overnight |
-| Weekend peak: 1 PM (373 avg rentals) | Casual users ride midday |
-| Temperature correlation: 0.24 (night) → 0.53 (evening) | Weather impacts evenings most |
+| Weekend peak: 1 PM (391 avg rentals) | Casual users ride midday |
+| Temperature correlation: 0.21 (night) → 0.50 (evening) | Weather impacts evenings most |
 | Growth: +75–134 bikes/month from 2011 to 2012 | Demand increased significantly |
 
 ### Prediction Error by Hour
 
 | Best Hours (Lowest Error) | Worst Hours (Highest Error) |
 |---------------------------|----------------------------|
-| 4 AM: 3.2 bikes | 5 PM: 86.8 bikes |
-| 3 AM: 5.1 bikes | 6 PM: 75.0 bikes |
-| 2 AM: 9.7 bikes | 8 AM: 72.9 bikes |
-| 5 AM: 9.7 bikes | 4 PM: 62.5 bikes |
-| 1 AM: 13.1 bikes | 3 PM: 61.4 bikes |
+| 4 AM: **2.9 bikes** | 5 PM: **88.0 bikes** |
+| 3 AM: **4.0 bikes** | 8 AM: **65.6 bikes** |
+| 2 AM: **6.3 bikes** | 6 PM: **60.6 bikes** |
+| 5 AM: **6.9 bikes** | 4 PM: **47.2 bikes** |
+| 1 AM: **10.3 bikes** | 3 PM: **41.7 bikes** |
 
 ---
 
@@ -306,9 +315,11 @@ SHAP values explain which features most influence predictions:
 
 | Metric | Value |
 |--------|-------|
-| Mean Absolute Error | 42 bikes |
-| Percentage Error | 16.6% |
-| Estimated Annual Revenue | **$11,129,174** |
+| Mean Absolute Error | **31 bikes** |
+| Percentage Error | **11.9%** |
+| Estimated Annual Revenue (model baseline) | **$11,129,174** |
+
+**Note:** With improved accuracy (MAE reduced from 42 to 31 bikes), operational efficiency and revenue optimization potential is even higher!
 
 ---
 
