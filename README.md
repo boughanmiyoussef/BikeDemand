@@ -1,5 +1,3 @@
-Here's your updated README with the NEW numbers (R² = 0.9550, RMSE = 46.71, MAE = 31 bikes, 11.9% error):
-
 ---
 
 # 🚲 Bike Demand Forecasting
