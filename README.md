@@ -1,7 +1,3 @@
-Here's your updated README with the NEW numbers (R² = 0.9550, RMSE = 46.71, MAE = 31 bikes, 11.9% error):
-
----
-
 # 🚲 Bike Demand Forecasting
 
 🔗 Live Demo: https://bikedemand.onrender.com
@@ -189,7 +185,7 @@ This project predicts the **total number of bike rentals per hour** (`cnt`) usin
 **Dataset Size:** 17,379 hourly records (2011–2012) → 15,552 after lag features
 
 ---
-
+     
 ## 🔧 Feature Engineering
 
 ### 1. Cyclical Encoding (sin/cos transformations)
