@@ -32,8 +32,6 @@ dataset/*.csv
 
 # Figures
 figs/
-*.png
-*.jpg
 *.pdf
 
 # Logs
