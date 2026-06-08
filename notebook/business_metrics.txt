@@ -1,0 +1,3 @@
+MAE: 31.22 bikes
+Error Rate: 12.14%
+Annual Revenue Estimate: $11,259,758

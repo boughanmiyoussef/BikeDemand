@@ -1,0 +1,7 @@
+Final Model: LightGBM (default parameters)
+RMSE: 63.62
+R²: 0.9162
+MAE: 30.04
+Training size: 11280
+Test size: 4272
+Features: 24
