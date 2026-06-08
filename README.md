@@ -325,26 +325,33 @@ SHAP values explain which features most influence predictions:
 ```
 BikeDemand/
 │
-├── BikeDemand.ipynb                 # Main analysis notebook
 ├── app.py                           # Streamlit web application
-├── requirements.txt                 # Python dependencies
-├── .gitignore                       # Git ignore file
 ├── README.md                        # Project documentation
-│
-├── lightgbm_model.pkl               # Saved trained model
-├── test_predictions.csv             # All predictions
-├── feature_importance.csv           # Feature importance rankings
-├── final_metrics.txt                # Model performance metrics
-├── business_metrics.txt             # Business impact metrics
-│
-├── shap_summary.png                 # SHAP dot plot
-├── shap_importance.png              # SHAP bar plot
-├── weather_boxplot.png              # Weather error distribution
-├── weather_temp_error.png           # Temperature vs error plot
+├── requirements.txt                 # Python dependencies
 │
 ├── dataset/
-    ├── hour.csv                     # Hourly bike data (UCI)
-    └── day.csv                      # Daily bike data (UCI)
+│   ├── hour.csv                     # Hourly bike data (UCI)
+│   ├── day.csv                      # Daily bike data (UCI)
+│   └── Readme.txt                   # Dataset documentation
+│
+├── notebook/
+│   ├── BikeDemand.ipynb             # Main analysis notebook
+│   ├── lightgbm_model.pkl           # Saved trained model
+│   ├── test_predictions.csv         # All predictions
+│   ├── feature_importance.csv       # Feature importance rankings
+│   ├── final_metrics.txt            # Model performance metrics
+│   ├── business_metrics.txt         # Business impact metrics
+│   ├── shap_summary.png             # SHAP dot plot
+│   ├── shap_importance.png          # SHAP bar plot
+│   ├── weather_boxplot.png          # Weather error distribution
+│   ├── weather_temp_error.png       # Temperature vs error plot
+│   └── weather_impact_analysis.png  # Combined weather analysis
+│
+└── screenshots/
+    ├── image1.png                   # Home page screenshot
+    ├── image2.png                   # Prediction result screenshot
+    └── image3.png                   # Sample predictions screenshot
+
 ```
 
 ---
