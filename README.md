@@ -1,6 +1,3 @@
-
----
-
 # 🚲 Bike Demand Forecasting
 
 🔗 Live Demo: https://bikedemand.onrender.com
@@ -65,6 +62,8 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 ---
 
 ## 📊 Data Flow Diagram
+
+---
 
 ┌─────────────────────────────────────────────────────────────┐
 │                     DATA FLOW DIAGRAM                        │
