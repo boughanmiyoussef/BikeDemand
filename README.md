@@ -19,107 +19,108 @@ An end-to-end machine learning project that predicts **hourly bike rental demand
 
 ## 🏗️ System Architecture
 
-┌─────────────────────────────────────────────────────────────┐
-│                    SYSTEM ARCHITECTURE                      │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                  1. DATA PIPELINE                    │   │
-│   │  • Raw Data (CSV Files) • 17,379 hourly records     │   │
-│   └─────────────────────────┬───────────────────────────┘   │
-│                             │                               │
-│                             ▼                               │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                2. FEATURE ENGINEERING                │   │
-│   │  • Sin/Cos Encoding • Lag Features (1h,2h,3h,24h,168h)│   │
-│   │  • Rolling Averages (24h, 168h) • Weather Features  │   │
-│   └─────────────────────────┬───────────────────────────┘   │
-│                             │                               │
-│                             ▼                               │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                   3. MODEL TRAINING                  │   │
-│   │  • LightGBM (Best: 46.71 RMSE) • XGBoost            │   │
-│   │  • Random Forest • Gradient Boosting                │   │
-│   │  • TimeSeriesSplit (5 folds)                        │   │
-│   └─────────────────────────┬───────────────────────────┘   │
-│                             │                               │
-│                             ▼                               │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                  4. MODEL EVALUATION                 │   │
-│   │  • SHAP Analysis • Weather Impact                   │   │
-│   │  • Error by Hour • Business Metrics                 │   │
-│   └─────────────────────────┬───────────────────────────┘   │
-│                             │                               │
-│                             ▼                               │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                    5. DEPLOYMENT                     │   │
-│   │  • Streamlit Web App • Real-time Predictions        │   │
-│   │  • Interactive Interface • API Ready                │   │
-│   └─────────────────────────────────────────────────────┘   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           SYSTEM ARCHITECTURE                           │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                        1. DATA PIPELINE                           │ │
+│  │         Raw CSV Files (17,379 hourly records)                     │ │
+│  └─────────────────────────────┬─────────────────────────────────────┘ │
+│                                │                                       │
+│                                ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                     2. FEATURE ENGINEERING                        │ │
+│  │  Sin/Cos Encoding → Lag Features (1h,2h,3h,24h,168h)              │ │
+│  │  Rolling Averages (24h, 168h) → Weather Features                  │ │
+│  └─────────────────────────────┬─────────────────────────────────────┘ │
+│                                │                                       │
+│                                ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                        3. MODEL TRAINING                          │ │
+│  │  LightGBM (Best: 46.71 RMSE) → XGBoost → Random Forest            │ │
+│  │  Gradient Boosting → TimeSeriesSplit (5 folds)                    │ │
+│  └─────────────────────────────┬─────────────────────────────────────┘ │
+│                                │                                       │
+│                                ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                       4. MODEL EVALUATION                         │ │
+│  │  SHAP Analysis → Weather Impact → Error by Hour                   │ │
+│  │  Business Metrics (MAE: 31 bikes, 11.9% error)                    │ │
+│  └─────────────────────────────┬─────────────────────────────────────┘ │
+│                                │                                       │
+│                                ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                         5. DEPLOYMENT                             │ │
+│  │  Streamlit Web App → Real-time Predictions → Interactive UI       │ │
+│  └───────────────────────────────────────────────────────────────────┘ │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## 📊 Data Flow Diagram
 
----
-
-┌─────────────────────────────────────────────────────────────┐
-│                     DATA FLOW DIAGRAM                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                  1. RAW DATA                         │   │
-│   │         hour.csv • day.csv (UCI Dataset)            │   │
-│   └─────────────────────────┬───────────────────────────┘   │
-│                             │                               │
-│                             ▼                               │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                 2. DATA PREPROCESSING                │   │
-│   │  • Handle missing values • Convert date to datetime │   │
-│   │  • Remove incomplete days (76 days missing hours)   │   │
-│   │  • Remove leakage columns (casual, registered)      │   │
-│   │  • Handle outliers using IQR method                 │   │
-│   └─────────────────────────┬───────────────────────────┘   │
-│                             │                               │
-│                             ▼                               │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                 3. FEATURE ENGINEERING               │   │
-│   │  • Cyclical encoding (sin/cos for hour/month/day)   │   │
-│   │  • Lag features (1h, 2h, 3h, 24h, 168h shifts)     │   │
-│   │  • Rolling averages (24h and 7-day windows)         │   │
-│   └─────────────────────────┬───────────────────────────┘   │
-│                             │                               │
-│                             ▼                               │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                   4. MODEL TRAINING                  │   │
-│   │  • Train/Test split (time-based: July 2012 cutoff)  │   │
-│   │  • Train: 11,280 rows (2011 + early 2012)           │   │
-│   │  • Test: 4,272 rows (July–Dec 2012)                 │   │
-│   │  • TimeSeriesSplit cross-validation (5 folds)       │   │
-│   │  • Hyperparameter tuning with Optuna                │   │
-│   └─────────────────────────┬───────────────────────────┘   │
-│                             │                               │
-│                             ▼                               │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                  5. MODEL EVALUATION                 │   │
-│   │  • SHAP analysis for interpretability               │   │
-│   │  • Weather impact analysis (error by condition)     │   │
-│   │  • Error analysis by hour of day                    │   │
-│   │  • Business metrics (MAE: 31 bikes, 11.9% error)    │   │
-│   └─────────────────────────┬───────────────────────────┘   │
-│                             │                               │
-│                             ▼                               │
-│   ┌─────────────────────────────────────────────────────┐   │
-│   │                   6. DEPLOYMENT                      │   │
-│   │  • Streamlit web application                        │   │
-│   │  • Real-time predictions                            │   │
-│   │  • User-friendly interface                          │   │
-│   │  • CSV export functionality                         │   │
-│   └─────────────────────────────────────────────────────┘   │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          DATA FLOW DIAGRAM                              │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                         1. RAW DATA                               │ │
+│  │                    hour.csv + day.csv (UCI)                       │ │
+│  └─────────────────────────────┬─────────────────────────────────────┘ │
+│                                │                                       │
+│                                ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                      2. DATA PREPROCESSING                        │ │
+│  │  • Convert dteday to datetime                                     │ │
+│  │  • Remove incomplete days (76 days missing hours)                 │ │
+│  │  • Remove leakage columns (casual, registered)                    │ │
+│  │  • Handle outliers using IQR method                               │ │
+│  └─────────────────────────────┬─────────────────────────────────────┘ │
+│                                │                                       │
+│                                ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                     3. FEATURE ENGINEERING                        │ │
+│  │  • Cyclical encoding (sin/cos for hour/month/day)                 │ │
+│  │  • Lag features (1h, 2h, 3h, 24h, 168h shifts)                    │ │
+│  │  • Rolling averages (24h and 7-day windows)                       │ │
+│  │  • Output: 24 engineered features                                 │ │
+│  └─────────────────────────────┬─────────────────────────────────────┘ │
+│                                │                                       │
+│                                ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                        4. MODEL TRAINING                          │ │
+│  │  • Train/Test split (time-based: July 2012 cutoff)                │ │
+│  │  • Train: 11,280 rows (2011 + early 2012)                         │ │
+│  │  • Test: 4,272 rows (July–Dec 2012) - PURE FUTURE!                │ │
+│  │  • TimeSeriesSplit cross-validation (5 folds)                     │ │
+│  │  • Hyperparameter tuning with Optuna                              │ │
+│  └─────────────────────────────┬─────────────────────────────────────┘ │
+│                                │                                       │
+│                                ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                       5. MODEL EVALUATION                         │ │
+│  │  • SHAP analysis for interpretability                             │ │
+│  │  • Weather impact analysis (error by condition)                   │ │
+│  │  • Error analysis by hour of day                                  │ │
+│  │  • Business metrics (MAE: 31 bikes, 11.9% error)                  │ │
+│  └─────────────────────────────┬─────────────────────────────────────┘ │
+│                                │                                       │
+│                                ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                         6. DEPLOYMENT                             │ │
+│  │  • Streamlit web application                                      │ │
+│  │  • Real-time predictions                                          │ │
+│  │  • User-friendly interface                                        │ │
+│  │  • CSV export functionality                                       │ │
+│  └───────────────────────────────────────────────────────────────────┘ │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -187,7 +188,7 @@ This project predicts the **total number of bike rentals per hour** (`cnt`) usin
 **Dataset Size:** 17,379 hourly records (2011–2012) → 15,552 after lag features
 
 ---
-     
+
 ## 🔧 Feature Engineering
 
 ### 1. Cyclical Encoding (sin/cos transformations)
@@ -195,12 +196,12 @@ This project predicts the **total number of bike rentals per hour** (`cnt`) usin
 Preserves circular relationships (e.g., hour 23 and hour 0 are close):
 
 ```python
-df['hour_sin'] = np.sin(2 * π * df['hour'] / 24)
-df['hour_cos'] = np.cos(2 * π * df['hour'] / 24)
-df['month_sin'] = np.sin(2 * π * df['month'] / 12)
-df['month_cos'] = np.cos(2 * π * df['month'] / 12)
-df['dow_sin'] = np.sin(2 * π * df['weekday'] / 7)
-df['dow_cos'] = np.cos(2 * π * df['weekday'] / 7)
+df['hour_sin'] = np.sin(2 * np.pi * df['hr_num'] / 24)
+df['hour_cos'] = np.cos(2 * np.pi * df['hr_num'] / 24)
+df['month_sin'] = np.sin(2 * np.pi * df['mnth_num'] / 12)
+df['month_cos'] = np.cos(2 * np.pi * df['mnth_num'] / 12)
+df['dow_sin'] = np.sin(2 * np.pi * df['weekday_num'] / 7)
+df['dow_cos'] = np.cos(2 * np.pi * df['weekday_num'] / 7)
 ```
 
 ### 2. Time Series Lag Features (Critical for Forecasting!)
@@ -244,8 +245,8 @@ split_date = '2012-07-01'
 train_mask = df['dteday'] < split_date   # 11,280 rows (2011 + early 2012)
 test_mask = df['dteday'] >= split_date   # 4,272 rows (July–Dec 2012)
 
-X_train = X[train_mask]  # Past data only
-X_test  = X[test_mask]   # Future data only
+X_train = X_clean.loc[train_mask]  # Past data only
+X_test = X_clean.loc[test_mask]    # Future data only
 ```
 
 **Why this matters:** Random shuffling would leak future information into training, making results invalid for forecasting.
@@ -315,9 +316,7 @@ SHAP values explain which features most influence predictions:
 |--------|-------|
 | Mean Absolute Error | **31 bikes** |
 | Percentage Error | **11.9%** |
-| Estimated Annual Revenue (model baseline) | **$11,129,174** |
-
-**Note:** With improved accuracy (MAE reduced from 42 to 31 bikes), operational efficiency and revenue optimization potential is even higher!
+| Estimated Annual Revenue | **$11,129,174** |
 
 ---
 
@@ -342,12 +341,10 @@ BikeDemand/
 ├── shap_importance.png              # SHAP bar plot
 ├── weather_boxplot.png              # Weather error distribution
 ├── weather_temp_error.png           # Temperature vs error plot
-├── weather_impact_analysis.png      # Combined weather analysis
 │
 ├── dataset/
     ├── hour.csv                     # Hourly bike data (UCI)
     └── day.csv                      # Daily bike data (UCI)
-
 ```
 
 ---
@@ -393,13 +390,6 @@ The project includes an `app.py` file that creates an interactive web applicatio
 - Real-time prediction using the trained LightGBM model
 - Visual display of predicted bike rentals
 - Easy-to-use interface for non-technical users
-
-### Sample usage:
-```bash
-streamlit run app.py
-```
-
-Then open your browser to `http://localhost:8501`
 
 ---
 
