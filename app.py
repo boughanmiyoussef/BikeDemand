@@ -5,7 +5,6 @@ import joblib
 import os
 from datetime import datetime
 
-# Page configuration
 st.set_page_config(
     page_title="Bike Demand Forecast",
     page_icon="🚲",
@@ -13,7 +12,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Title
 st.title("🚲 Bike Demand Forecasting")
 
 st.divider()
