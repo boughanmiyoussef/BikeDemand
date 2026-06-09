@@ -167,18 +167,32 @@ def create_cyclical_features(hour, month, weekday):
     return hour_sin, hour_cos, month_sin, month_cos, dow_sin, dow_cos
 
 def get_lag_features(hour, recent_avg=150):
-    if hour in [7, 8, 9, 17, 18, 19]:
-        cnt_lag_24 = recent_avg * 1.5
-    elif hour in [23, 0, 1, 2, 3, 4, 5]:
-        cnt_lag_24 = recent_avg * 0.3
+    if hour in [7, 8, 9, 16, 17, 18]:
+        cnt_lag_1 = 450
+        cnt_lag_2 = 420
+        cnt_lag_3 = 400
+        cnt_lag_24 = 430
+        cnt_lag_168 = 410
+        cnt_rolling_24 = 420
+        cnt_rolling_168 = 400
+    elif hour in [22, 23, 0, 1, 2, 3, 4, 5]:
+        cnt_lag_1 = 50
+        cnt_lag_2 = 45
+        cnt_lag_3 = 40
+        cnt_lag_24 = 60
+        cnt_lag_168 = 55
+        cnt_rolling_24 = 50
+        cnt_rolling_168 = 45
     else:
-        cnt_lag_24 = recent_avg
+        cnt_lag_1 = 200
+        cnt_lag_2 = 190
+        cnt_lag_3 = 180
+        cnt_lag_24 = 200
+        cnt_lag_168 = 190
+        cnt_rolling_24 = 195
+        cnt_rolling_168 = 185
     
-    cnt_lag_168 = cnt_lag_24 * 1.1
-    cnt_rolling_24 = recent_avg
-    cnt_rolling_168 = recent_avg
-    
-    return cnt_lag_24, cnt_lag_168, cnt_rolling_24, cnt_rolling_168
+    return cnt_lag_1, cnt_lag_2, cnt_lag_3, cnt_lag_24, cnt_lag_168, cnt_rolling_24, cnt_rolling_168
 
 # Main content area
 st.subheader("🔮 Make a Prediction")
@@ -214,7 +228,7 @@ if st.button("🚲 Predict Bike Rentals", type="primary", use_container_width=Tr
             hour, month, weekday
         )
         
-        cnt_lag_24, cnt_lag_168, cnt_rolling_24, cnt_rolling_168 = get_lag_features(hour)
+        cnt_lag_1, cnt_lag_2, cnt_lag_3, cnt_lag_24, cnt_lag_168, cnt_rolling_24, cnt_rolling_168 = get_lag_features(hour)
         
         yr = 1 if year == 2012 else 0
         season = season_value
@@ -224,13 +238,13 @@ if st.button("🚲 Predict Bike Rentals", type="primary", use_container_width=Tr
             season, yr, 1 if holiday else 0, workingday,
             weathersit, temp, hum, windspeed, hour, month, weekday,
             hour_sin, hour_cos, month_sin, month_cos, dow_sin, dow_cos,
+            cnt_lag_1, cnt_lag_2, cnt_lag_3,
             cnt_lag_24, cnt_lag_168, cnt_rolling_24, cnt_rolling_168
         ]])
         
         prediction = model.predict(features)[0]
         prediction = max(0, int(round(prediction)))
         
-        # ========== ACTUAL VS PREDICTED COMPARISON ==========
         st.divider()
         st.subheader(f"📊 Historical Data for {weekday_names[weekday]}s in {month_names[month]} {year}")
         
