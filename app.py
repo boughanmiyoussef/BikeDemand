@@ -48,7 +48,6 @@ def get_season_from_month(month):
     else:
         return 4, "Fall"
 
-# Get realistic default values based on season and weather
 def get_default_temp_hum_wind(season_name, weathersit):
     if season_name == "Summer":
         temp_default = 0.75
@@ -59,17 +58,17 @@ def get_default_temp_hum_wind(season_name, weathersit):
     elif season_name == "Fall":
         temp_default = 0.50
         hum_default = 0.65
-    else:  # Winter
+    else:
         temp_default = 0.35
         hum_default = 0.70
     
-    if weathersit == 2:  # Mist/Cloudy
+    if weathersit == 2:
         temp_default = temp_default - 0.05
         hum_default = min(0.95, hum_default + 0.10)
-    elif weathersit == 3:  # Light rain
+    elif weathersit == 3:
         temp_default = temp_default - 0.10
         hum_default = min(0.95, hum_default + 0.20)
-    elif weathersit == 4:  # Heavy rain
+    elif weathersit == 4:
         temp_default = temp_default - 0.15
         hum_default = 0.95
     
@@ -77,10 +76,8 @@ def get_default_temp_hum_wind(season_name, weathersit):
     
     return temp_default, hum_default, wind_default
 
-# Sidebar for inputs
 st.sidebar.header("📊 Input Parameters")
 
-# Info about test period
 st.sidebar.info("""
     📅 **Note:** The model was trained on data from **2011 to June 2012**.
     Predictions are for **July 2012 - December 2012** (test period).
@@ -263,12 +260,10 @@ if st.button("🚲 Predict Bike Rentals", type="primary", use_container_width=Tr
                 ].copy()
                 
                 if len(similar_predictions) > 0:
-                    # Add day column for chart
                     similar_predictions['Day'] = similar_predictions['Date_dt'].dt.day
                     
                     st.markdown(f"### 📅 All {weekday_names[weekday]}s in {month_names[month]} {year} at {hour}:00")
                     
-                    # Create comparison dataframe without Day column for display
                     comparison_df = similar_predictions[['Date', 'Actual', 'Predicted', 'Error']].copy()
                     comparison_df = comparison_df.reset_index(drop=True)
                     comparison_df['Date'] = pd.to_datetime(comparison_df['Date']).dt.strftime('%Y-%m-%d')
