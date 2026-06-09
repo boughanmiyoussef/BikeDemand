@@ -150,10 +150,6 @@ windspeed = st.sidebar.slider("Wind Speed (normalized 0-1)", 0.0, 1.0, default_w
 
 st.sidebar.divider()
 
-st.sidebar.info("""
-    **Note:** Lag features require historical data. For single predictions, default values are used.
-""")
-
 def create_cyclical_features(hour, month, weekday):
     hour_sin = np.sin(2 * np.pi * hour / 24)
     hour_cos = np.cos(2 * np.pi * hour / 24)
