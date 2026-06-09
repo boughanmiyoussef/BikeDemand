@@ -223,17 +223,17 @@ df['cnt_rolling_168'] = df['cnt'].rolling(168).mean() # Weekly average
 
 ---
 
-## 🧠 Models Compared
+## Models Compared
 
-| Model | RMSE | R² | MAE |
-|-------|------|-----|-----|
-| **LightGBM (Default)** | **46.71** | **0.9550** | **31.00** |
-| Gradient Boosting | 49.75 | 0.9490 | 32.50 |
-| Random Forest | 52.43 | 0.9433 | 33.80 |
-| XGBoost | 52.73 | 0.9427 | 34.20 |
-| Linear Regression | 76.88 | 0.8781 | 55.00 |
-
-**🏆 Best Model:** LightGBM (Default) with **R² = 0.9550**
+| Model | R² | RMSE | MAE |
+|-------|-----|------|-----|
+| **LightGBM (Default)** | **0.9550** 🏆 | **46.71** | **30.50** |
+| Gradient Boosting | 0.9490 | 49.75 | 32.50 |
+| LightGBM (Optuna) | 0.9481 | 50.17 | 33.00 |
+| Random Forest | 0.9433 | 52.43 | 34.50 |
+| XGBoost | 0.9427 | 52.73 | 34.80 |
+| LightGBM (Log-Optuna) | 0.9401 | 53.90 | 35.50 |
+| Linear Regression | 0.8781 | 76.88 | 55.00 |
 
 ---
 
