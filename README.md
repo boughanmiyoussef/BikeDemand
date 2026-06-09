@@ -229,10 +229,10 @@ df['cnt_rolling_168'] = df['cnt'].rolling(168).mean() # Weekly average
 |-------|-----|------|-----|
 | **LightGBM (Default)** | **0.9550** 🏆 | **46.71** | **30.50** |
 | Gradient Boosting | 0.9490 | 49.75 | 32.50 |
-| LightGBM (Optuna) | 0.9481 | 50.17 | 33.00 |
+| LightGBM (Optuna) | 0.9484 | 50.05 | 31.06 |
 | Random Forest | 0.9433 | 52.43 | 34.50 |
 | XGBoost | 0.9427 | 52.73 | 34.80 |
-| LightGBM (Log-Optuna) | 0.9401 | 53.90 | 35.50 |
+| LightGBM (Log-Optuna) | 0.9424 | 52.84 | 35.50 |
 | Linear Regression | 0.8781 | 76.88 | 55.00 |
 
 ---
