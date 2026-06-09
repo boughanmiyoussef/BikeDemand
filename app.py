@@ -16,11 +16,9 @@ st.title("🚲 Bike Demand Forecasting")
 
 st.info("""
     ⚠️ **Prediction Disclaimer:** 
-    - Accuracy is LOWER during rain/snow (error doubles from 29 to 52 bikes)
-    - Accuracy is LOWER during rush hour (5 PM error: 88 bikes)
-    - Model trained on 2011-2012 data; unusual events may affect predictions
-    - For planning purposes only, not real-time operations
-""")
+    - Does not account for special events or infrastructure changes
+    - For planning purposes only — not real-time operations"""
+    )
 
 st.divider()
 
