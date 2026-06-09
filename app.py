@@ -276,6 +276,7 @@ if st.button("🚲 Predict Bike Rentals", type="primary", use_container_width=Tr
                     
                     comparison_df = similar_predictions[['Date', 'Actual', 'Predicted', 'Error']].copy()
                     comparison_df = comparison_df.reset_index(drop=True)
+                    comparison_df.index = comparison_df.index + 1
                     comparison_df['Date'] = pd.to_datetime(comparison_df['Date']).dt.strftime('%Y-%m-%d')
                     comparison_df['Error'] = comparison_df['Error'].round(1)
                     
